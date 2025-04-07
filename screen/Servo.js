@@ -13,7 +13,7 @@ export default function ServoTest() {
       Alert.alert('Erro', 'Preencha todos os campos!');
     } else {
       Alert.alert('Comando enviado', `Pata: ${pata}\nMotor: ${motor}\nÂngulo: ${angle}°`);
-      // Aqui você pode adicionar a lógica para enviar o comando real ao robô
+      // adicionar a lógica para enviar o comando real ao robô
     }
   };
 
