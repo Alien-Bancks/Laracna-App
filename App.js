@@ -1,77 +1,39 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Alert, TouchableOpacity } from 'react-native';
-import React, { useState } from 'react';  
+import React from 'react';
+import { StyleSheet } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import { registerRootComponent } from 'expo';  
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { registerRootComponent } from 'expo';
 
+// telas
 import MoveControl from './screen/MoveControl';
 import MotorControl from './screen/MotorControl';
 import Configuration from './screen/Configuration';
 import FilesAndLogs from './screen/FilesAndLogs';
-
-const Stack = createStackNavigator();
+import Servo from './screen/Servo';
+const Tab = createBottomTabNavigator();
 
 function App() {
-  const [perna, setPerna] = useState('');
-  const [motor, setMotor] = useState('');
-
-  const enviarComando = () => {
-    if (!perna || !motor) {
-      Alert.alert('Erro', 'Preencha os campos!');
-    } else {
-      Alert.alert('Comando Enviado', `Perna: ${perna}, Motor: ${motor}`);
-    }
-  };
-
-  const HomeScreen = ({ navigation }) => (
-    <View style={styles.container}>
-      <Text style={styles.title}>Controle dos Motores</Text>
-
-      <TextInput
-        style={styles.input}
-        value={perna}
-        onChangeText={setPerna}
-      />
-
-      <TextInput
-        style={styles.input}
-        value={motor}
-        onChangeText={setMotor}
-      />
-
-      <TouchableOpacity style={styles.sendButton} onPress={enviarComando}>
-        <Text style={styles.buttonText}>Enviar</Text>
-      </TouchableOpacity>
-
-      <View style={styles.navigationButtons}>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MoveControl')}>
-          <Text style={styles.buttonText}>Move Control</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('MotorControl')}>
-          <Text style={styles.buttonText}>Motor Control</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('Configuration')}>
-          <Text style={styles.buttonText}>Configurações</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('FilesAndLogs')}>
-          <Text style={styles.buttonText}>Arquivos e Logs</Text>
-        </TouchableOpacity>
-      </View>
-
-      <StatusBar style="auto" />
-    </View>
-  );
-
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={HomeScreen} />
-        <Stack.Screen name="MoveControl" component={MoveControl} />
-        <Stack.Screen name="MotorControl" component={MotorControl} />
-        <Stack.Screen name="Configuration" component={Configuration} />
-        <Stack.Screen name="FilesAndLogs" component={FilesAndLogs} />
-      </Stack.Navigator>
+      <Tab.Navigator
+        initialRouteName="Move"
+        screenOptions={{
+          tabBarActiveTintColor: '#e74c3c',
+          tabBarInactiveTintColor: '#bdc3c7',
+          tabBarStyle: { backgroundColor: '#2C3E50', paddingBottom: 5 },
+          headerStyle: { backgroundColor: '#2C3E50' },
+          headerTintColor: 'white',
+          tabBarLabelStyle: { fontSize: 12 },
+        }}
+      >
+        <Tab.Screen name="Servo" component={Servo} />
+        <Tab.Screen name="Move" component={MoveControl} />
+        <Tab.Screen name="Motor" component={MotorControl} />
+        <Tab.Screen name="Config" component={Configuration} />
+        <Tab.Screen name="Logs" component={FilesAndLogs} />
+      </Tab.Navigator>
+      <StatusBar style="auto" />
     </NavigationContainer>
   );
 }
